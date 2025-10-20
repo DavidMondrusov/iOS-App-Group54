@@ -7,29 +7,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var authManager = AuthenticationManager()
     var body: some View {
-        TabView {
-            CalendarView()
-                .tabItem {
-                    Label("Calendar", systemImage: "calendar")
+        Group{
+            if authManager.isAuthenticated {
+                if authManager.isNewUser {
+                    OnboardingFormView()
+                        .environmentObject(authManager)
+                } else {
+                    CustomTabView()
+                        .environmentObject(authManager)
                 }
-            
-            MilestoneView()
-                .tabItem {
-                    Label("Milestones", systemImage: "flag.checkered")
-                }
-            
-            MedicalView()
-                .tabItem {
-                    Label("Medical", systemImage: "cross.case")
-                }
-            
-            AIView()
-                .tabItem {
-                    Label("AI", systemImage: "brain.head.profile")
-                }
+            } else {
+                LoginView().environmentObject(authManager)
+            }
+        }
+        .onChange(of: authManager.isAuthenticated) { oldValue, newValue in
+            print("Auth status changed from \(oldValue) to \(newValue)")
         }
     }
+    
 }
 
 #Preview {
