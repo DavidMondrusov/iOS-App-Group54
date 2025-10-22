@@ -6,7 +6,7 @@
 //
 import SwiftUI
 import FirebaseAuth
-import Firebase
+import FirebaseDatabase
 
 struct OnboardingFormView: View {
     @EnvironmentObject var authManager: AuthenticationManager
