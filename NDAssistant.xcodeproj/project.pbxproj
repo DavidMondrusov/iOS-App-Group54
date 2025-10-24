@@ -11,6 +11,9 @@
 		220109132EA6A678007FB4C0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 220109122EA6A678007FB4C0 /* FirebaseAuth */; };
 		220109152EA6A678007FB4C0 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 220109142EA6A678007FB4C0 /* FirebaseCore */; };
 		220109172EA6A678007FB4C0 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 220109162EA6A678007FB4C0 /* FirebaseFirestore */; };
+		C6F194252EA982390028375B /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = C6F194242EA982390028375B /* FirebaseDatabase */; };
+		C6F194272EA982390028375B /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = C6F194262EA982390028375B /* FirebaseFunctions */; };
+		C6F194292EA982390028375B /* FirebaseFunctionsCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C6F194282EA982390028375B /* FirebaseFunctionsCombine-Community */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,8 +33,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6F194292EA982390028375B /* FirebaseFunctionsCombine-Community in Frameworks */,
+				C6F194252EA982390028375B /* FirebaseDatabase in Frameworks */,
 				220109102EA6A1B0007FB4C0 /* HorizonCalendar in Frameworks */,
 				220109172EA6A678007FB4C0 /* FirebaseFirestore in Frameworks */,
+				C6F194272EA982390028375B /* FirebaseFunctions in Frameworks */,
 				220109152EA6A678007FB4C0 /* FirebaseCore in Frameworks */,
 				220109132EA6A678007FB4C0 /* FirebaseAuth in Frameworks */,
 			);
@@ -80,6 +86,9 @@
 				220109122EA6A678007FB4C0 /* FirebaseAuth */,
 				220109142EA6A678007FB4C0 /* FirebaseCore */,
 				220109162EA6A678007FB4C0 /* FirebaseFirestore */,
+				C6F194242EA982390028375B /* FirebaseDatabase */,
+				C6F194262EA982390028375B /* FirebaseFunctions */,
+				C6F194282EA982390028375B /* FirebaseFunctionsCombine-Community */,
 			);
 			productName = NDAssistant;
 			productReference = 22CB573D2E91C86C0090B3E6 /* NDAssistant.app */;
@@ -391,6 +400,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		C6F194242EA982390028375B /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		C6F194262EA982390028375B /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+		C6F194282EA982390028375B /* FirebaseFunctionsCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFunctionsCombine-Community";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
