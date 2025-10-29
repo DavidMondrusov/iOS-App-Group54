@@ -13,17 +13,13 @@ struct AIView: View {
     @State private var messages: [ChatMessage] = []
     @State private var isLoading = false
     
-    //let geminiBaseURL = URL(string: "https://generativelanguage.googleapis.com/v1beta/openai/")!
-    
-    //let openAI = OpenAI(apiToken: "AIzaSyC2ywV_yVmA51Yuyku7jIgRxnA36shBOLo", baseURL: geminiBaseURL)
-    
     //Weird OpenAI toolkit configuration for Gemini but it works
     let configuration = OpenAI.Configuration(
-        token: "AIzaSyC2ywV_yVmA51Yuyku7jIgRxnA36shBOLo",
-        host: "generativelanguage.googleapis.com",
-        basePath: "/v1beta/openai/"
-    )
-    let openAI: OpenAI
+            token: Secrets.geminiAPIKey,
+            host: "generativelanguage.googleapis.com",
+            basePath: "/v1beta/openai/"
+        )
+        let openAI: OpenAI
     
     init() {
             self.openAI = OpenAI(configuration: configuration)
