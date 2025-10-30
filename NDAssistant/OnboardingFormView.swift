@@ -264,6 +264,7 @@ struct OnboardingFormView: View {
             "Child_info": [
                 "Medications": stringToAny(medications),
                 "Conditions": stringToAny(conditions),
+                "Name": stringToAny(childName),
                 "Age": intToAny(age),
                 "Siblings": intToAny(siblings),
                 "Parental_status": stringToAny(parentalStatus),
