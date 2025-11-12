@@ -82,3 +82,14 @@ struct GoalDetailView: View {
         .padding()
     }
 }
+
+private struct Chip: View {
+    var text: String
+    init(_ text: String) { self.text = text }
+    var body: some View {
+        Text(text)
+            .font(.caption)
+            .padding(.vertical, 2).padding(.horizontal, 8)
+            .background(RoundedRectangle(cornerRadius: 999).stroke(Color.gray.opacity(0.3)))
+    }
+}

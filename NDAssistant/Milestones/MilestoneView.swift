@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProgressTrackerView: View {
+struct MilestoneView: View {
     @StateObject private var store = ProgressStore()
 
     @State private var selectedChildId: UUID? = nil
