@@ -21,7 +21,6 @@ struct CheckIn: Identifiable, Codable, Equatable {
     var id: UUID = UUID()
     var goalId: UUID
     var date: Date = Date()
-    var rating: Int // 1...5
     var note: String? = nil
 }
 

@@ -4,7 +4,7 @@ struct GoalDetailView: View {
     let goal: Goal
     let onBack: () -> Void
     let onToggleMilestone: (UUID) -> Void
-    let onAddCheckIn: (Int, String?) -> Void
+    let onAddCheckIn: (String) -> Void
     @ObservedObject var store: ProgressStore
     @ObservedObject var templateStore: TemplateStore
 
@@ -50,7 +50,7 @@ struct GoalDetailView: View {
                     Text("Target: \(goal.target)")
 
                     if let last = lastCheckIn {
-                        Text("Last check-in: \(dateFormatterShort.string(from: last.date)) • Rating \(last.rating)/5")
+                        Text("Last check-in: \(dateFormatterShort.string(from: last.date))")
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
@@ -75,25 +75,35 @@ struct GoalDetailView: View {
 
                 // Check-ins
                 VStack(alignment: .leading, spacing: 8) {
+                    // MARK: - Check-in Form
                     Text("Log a Check-in").font(.headline)
                     CheckInFormView(onAddCheckIn: onAddCheckIn)
 
+                    // MARK: - History
                     if !goal.checkIns.isEmpty {
-                        Text("History").font(.subheadline).padding(.top, 4)
-                        ForEach(goal.checkIns.sorted(by: { $0.date > $1.date })) { ci in
-                            HStack(spacing: 8) {
-                                Text(dateFormatterShort.string(from: ci.date))
-                                    .frame(width: 90, alignment: .leading)
-                                Text(String(repeating: "★", count: ci.rating) + String(repeating: "☆", count: 5 - ci.rating))
-                                    .accessibilityLabel("Rating \(ci.rating) out of 5")
-                                    .frame(width: 90, alignment: .leading)
-                                if let note = ci.note, !note.isEmpty {
-                                    Text(note)
+                        Text("History").font(.subheadline).padding(.top, 8)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            ForEach(goal.checkIns.sorted(by: { $0.date > $1.date })) { ci in
+                                HStack(alignment: .top, spacing: 8) {
+                                    // Date
+                                    Text(dateFormatterShort.string(from: ci.date))
+                                        .frame(width: 90, alignment: .leading)
+                                        .foregroundColor(.gray)
+                                    
+                                    // Note
+                                    if let note = ci.note, !note.isEmpty {
+                                        Text(note)
+                                            .padding(8)
+                                            .background(RoundedRectangle(cornerRadius: 8).fill(Color.gray.opacity(0.1)))
+                                    }
                                 }
                             }
                         }
+                        .padding(.top, 2)
                     }
                 }
+                .padding()
             }
             .padding()
         }

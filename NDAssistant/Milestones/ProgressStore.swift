@@ -131,9 +131,9 @@ final class ProgressStore: ObservableObject {
     }
         
     // Add a new check-in
-    func addCheckIn(goalId: UUID, rating: Int, note: String?) {
+    func addCheckIn(goalId: UUID, note: String) {
         guard let goalIndex = goals.firstIndex(where: { $0.id == goalId }) else { return }
-        let checkIn = CheckIn(goalId: goalId, rating: rating, note: note)
+        let checkIn = CheckIn(goalId: goalId, note: note)
         goals[goalIndex].checkIns.append(checkIn)
         save()
     }
@@ -249,7 +249,6 @@ final class ProgressStore: ObservableObject {
             "id": checkIn.id.uuidString,
             "goalId": checkIn.goalId.uuidString,
             "date": checkIn.date.timeIntervalSince1970,
-            "rating": checkIn.rating,
             "note": checkIn.note ?? ""
         ]
     }
@@ -259,9 +258,9 @@ final class ProgressStore: ObservableObject {
               let id = UUID(uuidString: idStr),
               let goalIdStr = dict["goalId"] as? String,
               let goalId = UUID(uuidString: goalIdStr),
-              let dateTs = dict["date"] as? TimeInterval,
-              let rating = dict["rating"] as? Int else { return nil }
+              let dateTs = dict["date"] as? TimeInterval
+              else { return nil }
         let note = dict["note"] as? String
-        return CheckIn(id: id, goalId: goalId, date: Date(timeIntervalSince1970: dateTs), rating: rating, note: note)
+        return CheckIn(id: id, goalId: goalId, date: Date(timeIntervalSince1970: dateTs), note: note)
     }
 }

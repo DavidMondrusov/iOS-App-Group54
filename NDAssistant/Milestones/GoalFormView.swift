@@ -16,6 +16,9 @@ struct GoalFormView: View {
 
     @State private var selectedTemplateId: String? = nil
 
+    // Debug alert
+    @State private var debugAlertMessage: String? = nil
+
     init(store: ProgressStore, templateStore: TemplateStore, goalToEdit: Goal? = nil, onSave: @escaping (UUID) -> Void) {
         self.store = store
         self.templateStore = templateStore
@@ -30,105 +33,26 @@ struct GoalFormView: View {
         _milestones = State(initialValue: goalToEdit?.milestones ?? [])
     }
 
+    // MARK: - Stable Binding for Due Date
+    private var hasDueDate: Binding<Bool> {
+        Binding<Bool>(
+            get: { dueDate != nil },
+            set: { newValue in
+                if newValue {
+                    if dueDate == nil { dueDate = Date() }
+                } else {
+                    dueDate = nil
+                }
+            }
+        )
+    }
+
     var body: some View {
         NavigationStack {
             Form {
-                // MARK: - Templates / Examples Picker
-                Section(header: Text("Templates / Examples")) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        ForEach(Domain.allCases, id: \.self) { domain in
-                            let domainTemplates = templateStore.templates.values
-                                .filter { $0.domain == domain }
-                                .sorted { $0.title < $1.title }
-
-                            if !domainTemplates.isEmpty {
-                                DisclosureGroup(domain.rawValue) {
-                                    VStack(alignment: .leading, spacing: 4) {
-                                        ForEach(domainTemplates, id: \.id) { template in
-                                            Button(action: {
-                                                // Toggle selection
-                                                if selectedTemplateId == template.id.uuidString {
-                                                    selectedTemplateId = nil
-                                                    clearForm()
-                                                } else {
-                                                    selectedTemplateId = template.id.uuidString
-                                                    applyTemplate(template)
-                                                }
-                                            }) {
-                                                HStack {
-                                                    Text(template.title)
-                                                        .foregroundColor(.primary)
-                                                    Spacer()
-                                                    if selectedTemplateId == template.id.uuidString {
-                                                        Image(systemName: "checkmark")
-                                                            .foregroundColor(.blue)
-                                                            .transition(.opacity) // animate only the checkmark
-                                                    }
-                                                }
-                                                .padding(.vertical, 6)
-                                                .padding(.horizontal, 8)
-                                                .background(
-                                                    RoundedRectangle(cornerRadius: 6)
-                                                        .fill(selectedTemplateId == template.id.uuidString ? Color.blue.opacity(0.2) : Color.clear)
-                                                )
-                                            }
-                                            .buttonStyle(.plain)
-                                        }
-                                    }
-                                }
-                                .accentColor(.primary) // keeps disclosure arrow dark
-                                .padding(.vertical, 2)
-                            }
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                }
-
-                // MARK: - Goal Info
-                Section(header: Text("Goal Info")) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Title").font(.caption).foregroundColor(.gray)
-                        TextField("", text: $title)
-                            .textFieldStyle(.roundedBorder)
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Domain").font(.caption).foregroundColor(.gray)
-                        Picker("Domain", selection: $domain) {
-                            ForEach(Domain.allCases) { d in
-                                Text(d.rawValue).tag(d)
-                            }
-                        }
-                        .pickerStyle(.menu)
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Baseline").font(.caption).foregroundColor(.gray)
-                        TextField("", text: $baseline)
-                            .textFieldStyle(.roundedBorder)
-                    }
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Target").font(.caption).foregroundColor(.gray)
-                        TextField("", text: $target)
-                            .textFieldStyle(.roundedBorder)
-                    }
-                    
-                    Toggle("Set Due Date", isOn: Binding(
-                        get: { dueDate != nil },
-                        set: { dueDate = $0 ? (dueDate ?? Date()) : nil }
-                    ))
-                    if dueDate != nil {
-                        DatePicker(
-                            "Due Date",
-                            selection: $dueDate.unwrapped,
-                            displayedComponents: .date
-                        )
-                    }
-                }
-
-                // MARK: - Milestones
-                MilestonesSection(milestones: $milestones)
+                templatesSection
+                goalInfoSection
+                milestonesSection
             }
             .navigationTitle(goalToEdit == nil ? "New Goal" : "Edit Goal")
             .toolbar {
@@ -140,71 +64,143 @@ struct GoalFormView: View {
                         .disabled(title.isEmpty || baseline.isEmpty || target.isEmpty)
                 }
             }
+            .alert("Debug", isPresented: Binding<Bool>(
+                get: { debugAlertMessage != nil },
+                set: { if !$0 { debugAlertMessage = nil } }
+            )) {
+                Button("OK", role: .cancel) { debugAlertMessage = nil }
+            } message: {
+                Text(debugAlertMessage ?? "unknown")
+            }
         }
     }
-    
-    struct MilestonesSection: View {
-        @Binding var milestones: [Milestone]
 
-        var body: some View {
-            Section(header: Text("Milestones")) {
-                ForEach($milestones, id: \.id) { $milestone in
-                    MilestoneRow(milestone: $milestone) {
-                        deleteMilestone(id: milestone.id)
+    // MARK: - Sections
+
+    private var templatesSection: some View {
+        Section(header: Text("Templates / Examples")) {
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(Domain.allCases, id: \.self) { domain in
+                    let domainTemplates = templateStore.templates.values
+                        .filter { $0.domain == domain }
+                        .sorted { $0.title < $1.title }
+
+                    if !domainTemplates.isEmpty {
+                        DisclosureGroup(domain.rawValue) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                ForEach(domainTemplates, id: \.id) { template in
+                                    Button(action: {
+                                        if selectedTemplateId == template.id.uuidString {
+                                            selectedTemplateId = nil
+                                            clearForm()
+                                        } else {
+                                            selectedTemplateId = template.id.uuidString
+                                            applyTemplate(template)
+                                        }
+                                    }) {
+                                        HStack {
+                                            Text(template.title).foregroundColor(.primary)
+                                            Spacer()
+                                            if selectedTemplateId == template.id.uuidString {
+                                                Image(systemName: "checkmark")
+                                                    .foregroundColor(.blue)
+                                            }
+                                        }
+                                        .padding(.vertical, 6)
+                                        .padding(.horizontal, 8)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 6)
+                                                .fill(selectedTemplateId == template.id.uuidString ? Color.blue.opacity(0.2) : Color.clear)
+                                        )
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                            }
+                        }
+                        .accentColor(.primary)
+                        .padding(.vertical, 2)
                     }
                 }
-
-                Button("Add Milestone") {
-                    let new = Milestone(id: UUID(), title: "", targetDate: nil, status: .not_started, notes: nil)
-                    milestones.append(new)
-                }
-                .buttonStyle(.borderedProminent)
             }
-        }
-
-        private func deleteMilestone(id: UUID) {
-            DispatchQueue.main.async {
-                if let idx = milestones.firstIndex(where: { $0.id == id }) {
-                    milestones.remove(at: idx)
-                }
-            }
+            .frame(maxWidth: .infinity)
         }
     }
 
-    struct MilestoneRow: View {
-        @Binding var milestone: Milestone
-        var onDelete: () -> Void
+    private var goalInfoSection: some View {
+        Section(header: Text("Goal Info")) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Title").font(.caption).foregroundColor(.gray)
+                TextField("", text: $title).textFieldStyle(.roundedBorder)
+            }
 
-        var body: some View {
-            VStack(alignment: .leading) {
-                HStack {
-                    TextField("Milestone Title", text: $milestone.title)
-                        .textFieldStyle(.roundedBorder)
-                    Spacer()
-                    Button(role: .destructive, action: onDelete) {
-                        Image(systemName: "trash")
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Domain").font(.caption).foregroundColor(.gray)
+                Picker("Domain", selection: $domain) {
+                    ForEach(Domain.allCases) { d in
+                        Text(d.rawValue).tag(d)
                     }
                 }
-
-                Toggle("Set Target Date", isOn: Binding(
-                    get: { milestone.targetDate != nil },
-                    set: { milestone.targetDate = $0 ? (milestone.targetDate ?? Date()) : nil }
-                ))
-
-                if milestone.targetDate != nil {
-                    DatePicker(
-                        "Target Date",
-                        selection: $milestone.targetDate.unwrapped,
-                        displayedComponents: .date
-                    )
-                    .datePickerStyle(.compact)
-                }
+                .pickerStyle(.menu)
             }
-            .padding(.vertical, 4)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Baseline").font(.caption).foregroundColor(.gray)
+                TextField("", text: $baseline).textFieldStyle(.roundedBorder)
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Target").font(.caption).foregroundColor(.gray)
+                TextField("", text: $target).textFieldStyle(.roundedBorder)
+            }
+
+            Toggle("Set Due Date", isOn: hasDueDate)
+
+            if dueDate != nil {
+                DatePicker("Due Date", selection: $dueDate.unwrapped, displayedComponents: .date)
+            }
         }
     }
 
-    // MARK: - Helpers
+    private var milestonesSection: some View {
+        Section(header: Text("Milestones")) {
+            ForEach(milestones) { milestone in
+                MilestoneRow(
+                    milestone: binding(for: milestone),
+                    onDelete: { deleteMilestone(milestone) }
+                )
+            }
+
+            Button("Add Milestone") {
+                let new = Milestone(id: UUID(), title: "", targetDate: nil, status: .not_started, notes: nil)
+                print("[Milestones] Adding new milestone id=\(new.id.uuidString), beforeCount=\(milestones.count)")
+                milestones.append(new)
+                print("[Milestones] afterCount=\(milestones.count)")
+            }
+            .buttonStyle(.borderedProminent)
+        }
+    }
+
+    // MARK: - Milestone Helpers
+
+    private func binding(for milestone: Milestone) -> Binding<Milestone> {
+        guard let index = milestones.firstIndex(where: { $0.id == milestone.id }) else {
+            fatalError("Milestone binding not found")
+        }
+        return $milestones[index]
+    }
+
+    private func deleteMilestone(_ milestone: Milestone) {
+        guard let index = milestones.firstIndex(where: { $0.id == milestone.id }) else {
+            debugAlertMessage = "[BUG] Delete milestone not found"
+            return
+        }
+        withAnimation {
+            milestones.remove(at: index)
+        }
+        print("[Delete] removed milestone id=\(milestone.id.uuidString) newCount=\(milestones.count)")
+    }
+
+    // MARK: - Save
     private func saveGoal() {
         let goal = Goal(
             id: goalToEdit?.id ?? UUID(),
@@ -229,18 +225,14 @@ struct GoalFormView: View {
         dismiss()
     }
 
+    // MARK: - Template Helpers
     private func applyTemplate(_ template: Goal) {
         title = template.title
         domain = template.domain
         baseline = template.baseline
         target = template.target
         dueDate = template.dueDate
-
-        DispatchQueue.main.async {
-            self.milestones = template.milestones.map {
-                Milestone(id: $0.id, title: $0.title, targetDate: $0.targetDate, status: $0.status, notes: $0.notes)
-            }
-        }
+        milestones = template.milestones
     }
 
     private func clearForm() {
@@ -250,6 +242,49 @@ struct GoalFormView: View {
         target = ""
         dueDate = nil
         milestones = []
+    }
+}
+
+// MARK: - MilestoneRow
+struct MilestoneRow: View {
+    @Binding var milestone: Milestone
+    var onDelete: () -> Void
+
+    private var hasTargetDate: Binding<Bool> {
+        Binding<Bool>(
+            get: { milestone.targetDate != nil },
+            set: { hasDate in
+                if hasDate {
+                    if milestone.targetDate == nil { milestone.targetDate = Date() }
+                } else {
+                    milestone.targetDate = nil
+                }
+            }
+        )
+    }
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                TextField("Milestone Title", text: $milestone.title)
+                    .textFieldStyle(.roundedBorder)
+
+                Button(role: .destructive) {
+                    print("[MilestoneRow] delete tapped id=\(milestone.id.uuidString)")
+                    onDelete()
+                } label: {
+                    Image(systemName: "trash")
+                }
+            }
+
+            Toggle("Set Target Date", isOn: hasTargetDate)
+
+            if milestone.targetDate != nil {
+                DatePicker("Target Date", selection: $milestone.targetDate.unwrapped, displayedComponents: .date)
+                    .datePickerStyle(.compact)
+            }
+        }
+        .padding(.vertical, 4)
     }
 }
 

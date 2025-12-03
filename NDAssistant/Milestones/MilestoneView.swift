@@ -45,8 +45,8 @@ struct MilestoneView: View {
                     onToggleMilestone: { milestoneId in
                         store.toggleMilestone(goalId: goal.id, milestoneId: milestoneId)
                     },
-                    onAddCheckIn: { rating, note in
-                        store.addCheckIn(goalId: goal.id, rating: rating, note: note)
+                    onAddCheckIn: { note in
+                        store.addCheckIn(goalId: goal.id, note: note)
                     },
                     store: store,
                     templateStore: templateStore// must be last if that’s how the view is defined
