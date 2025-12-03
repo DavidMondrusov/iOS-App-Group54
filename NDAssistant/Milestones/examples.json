@@ -1,0 +1,120 @@
+{
+  "examples": {
+    "goals": {
+      "dev_goal_1": {
+        "id": "dev_goal_1",
+        "title": "Improve Fine Motor Skills",
+        "domain": "Developmental",
+        "baseline": "Difficulty using hands for small tasks",
+        "target": "Complete simple hand-based tasks independently",
+        "dueDate": null,
+        "milestones": [
+          { "id": "dev_goal_1_m1", "title": "Pick up small objects", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "dev_goal_1_m2", "title": "Stack blocks", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "dev_goal_1_m3", "title": "Use utensils without assistance", "targetDate": null, "status": "not_started", "notes": "" }
+        ],
+        "checkIns": [],
+        "createdAt": 1763410000,
+        "observedProgress": 0
+      },
+      "dev_goal_2": {
+        "id": "dev_goal_2",
+        "title": "Enhance Social Interaction",
+        "domain": "Developmental",
+        "baseline": "Difficulty initiating conversation",
+        "target": "Start a conversation with peers 3 times/day",
+        "dueDate": null,
+        "milestones": [
+          { "id": "dev_goal_2_m1", "title": "Greet a classmate", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "dev_goal_2_m2", "title": "Ask a question to a peer", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "dev_goal_2_m3", "title": "Join a group activity", "targetDate": null, "status": "not_started", "notes": "" }
+        ],
+        "checkIns": [],
+        "createdAt": 1763410000,
+        "observedProgress": 0
+      },
+      "dev_goal_3": {
+        "id": "dev_goal_3",
+        "title": "Enhance Communication Skills",
+        "domain": "Developmental",
+        "baseline": "Uses single words only",
+        "target": "Use short sentences in conversation",
+        "dueDate": null,
+        "milestones": [
+          { "id": "dev_goal_3_m1", "title": "Combine 2 words", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "dev_goal_3_m2", "title": "Combine 3 words", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "dev_goal_3_m3", "title": "Use simple sentences", "targetDate": null, "status": "not_started", "notes": "" }
+        ],
+        "checkIns": [],
+        "createdAt": 1763410000,
+        "observedProgress": 0
+      },
+
+      "edu_goal_1": {
+        "id": "edu_goal_1",
+        "title": "Improve Reading Skills",
+        "domain": "Educational",
+        "baseline": "Reads basic words only",
+        "target": "Read simple paragraphs independently",
+        "dueDate": null,
+        "milestones": [
+          { "id": "edu_goal_1_m1", "title": "Read 3-word sentences", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "edu_goal_1_m2", "title": "Comprehend short paragraphs", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "edu_goal_1_m3", "title": "Summarize stories orally", "targetDate": null, "status": "not_started", "notes": "" }
+        ],
+        "checkIns": [],
+        "createdAt": 1763410000,
+        "observedProgress": 0
+      },
+      "edu_goal_2": {
+        "id": "edu_goal_2",
+        "title": "Basic Math Skills",
+        "domain": "Educational",
+        "baseline": "Can add numbers 1-5",
+        "target": "Add and subtract numbers 1-20",
+        "dueDate": null,
+        "milestones": [
+          { "id": "edu_goal_2_m1", "title": "Add numbers 1-10", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "edu_goal_2_m2", "title": "Subtract numbers 1-10", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "edu_goal_2_m3", "title": "Add/subtract 1-20", "targetDate": null, "status": "not_started", "notes": "" }
+        ],
+        "checkIns": [],
+        "createdAt": 1763410000,
+        "observedProgress": 0
+      },
+      "edu_goal_3": {
+        "id": "edu_goal_3",
+        "title": "Improve Writing Skills",
+        "domain": "Educational",
+        "baseline": "Writes letters with difficulty",
+        "target": "Write simple sentences independently",
+        "dueDate": null,
+        "milestones": [
+          { "id": "edu_goal_3_m1", "title": "Write letters legibly", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "edu_goal_3_m2", "title": "Write words correctly", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "edu_goal_3_m3", "title": "Write short sentences", "targetDate": null, "status": "not_started", "notes": "" }
+        ],
+        "checkIns": [],
+        "createdAt": 1763410000,
+        "observedProgress": 0
+      },
+
+      "ther_goal_1": {
+        "id": "ther_goal_1",
+        "title": "Reduce Anxiety During Transitions",
+        "domain": "Therapeutic",
+        "baseline": "Upset during schedule changes",
+        "target": "Handle changes calmly 80% of the time",
+        "dueDate": null,
+        "milestones": [
+          { "id": "ther_goal_1_m1", "title": "Practice small changes", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "ther_goal_1_m2", "title": "Use visual schedule", "targetDate": null, "status": "not_started", "notes": "" },
+          { "id": "ther_goal_1_m3", "title": "Apply coping strategies independently", "targetDate": null, "status": "not_started", "notes": "" }
+        ],
+        "checkIns": [],
+        "createdAt": 1763410000,
+        "observedProgress": 0
+      }
+    }
+  }
+}

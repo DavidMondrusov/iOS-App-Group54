@@ -6,6 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		220109102EA6A1B0007FB4C0 /* HorizonCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 2201090F2EA6A1B0007FB4C0 /* HorizonCalendar */; };
+		220109132EA6A678007FB4C0 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 220109122EA6A678007FB4C0 /* FirebaseAuth */; };
+		220109152EA6A678007FB4C0 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 220109142EA6A678007FB4C0 /* FirebaseCore */; };
+		220109172EA6A678007FB4C0 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 220109162EA6A678007FB4C0 /* FirebaseFirestore */; };
+		C6B5A63F2EB22E2E006CCB4B /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = C6B5A63E2EB22E2E006CCB4B /* OpenAI */; };
+		C6F194252EA982390028375B /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = C6F194242EA982390028375B /* FirebaseDatabase */; };
+		C6F194272EA982390028375B /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = C6F194262EA982390028375B /* FirebaseFunctions */; };
+		C6F194292EA982390028375B /* FirebaseFunctionsCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = C6F194282EA982390028375B /* FirebaseFunctionsCombine-Community */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		22CB573D2E91C86C0090B3E6 /* NDAssistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NDAssistant.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +34,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6F194292EA982390028375B /* FirebaseFunctionsCombine-Community in Frameworks */,
+				C6F194252EA982390028375B /* FirebaseDatabase in Frameworks */,
+				C6B5A63F2EB22E2E006CCB4B /* OpenAI in Frameworks */,
+				220109102EA6A1B0007FB4C0 /* HorizonCalendar in Frameworks */,
+				220109172EA6A678007FB4C0 /* FirebaseFirestore in Frameworks */,
+				C6F194272EA982390028375B /* FirebaseFunctions in Frameworks */,
+				220109152EA6A678007FB4C0 /* FirebaseCore in Frameworks */,
+				220109132EA6A678007FB4C0 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +84,14 @@
 			);
 			name = NDAssistant;
 			packageProductDependencies = (
+				2201090F2EA6A1B0007FB4C0 /* HorizonCalendar */,
+				220109122EA6A678007FB4C0 /* FirebaseAuth */,
+				220109142EA6A678007FB4C0 /* FirebaseCore */,
+				220109162EA6A678007FB4C0 /* FirebaseFirestore */,
+				C6F194242EA982390028375B /* FirebaseDatabase */,
+				C6F194262EA982390028375B /* FirebaseFunctions */,
+				C6F194282EA982390028375B /* FirebaseFunctionsCombine-Community */,
+				C6B5A63E2EB22E2E006CCB4B /* OpenAI */,
 			);
 			productName = NDAssistant;
 			productReference = 22CB573D2E91C86C0090B3E6 /* NDAssistant.app */;
@@ -94,6 +121,11 @@
 			);
 			mainGroup = 22CB57342E91C86C0090B3E6;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2201090E2EA6A1B0007FB4C0 /* XCRemoteSwiftPackageReference "HorizonCalendar" */,
+				220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C6B5A63D2EB22E2E006CCB4B /* XCRemoteSwiftPackageReference "OpenAI" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 22CB573E2E91C86C0090B3E6 /* Products */;
 			projectDirPath = "";
@@ -332,6 +364,76 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2201090E2EA6A1B0007FB4C0 /* XCRemoteSwiftPackageReference "HorizonCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/HorizonCalendar";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.4.0;
+			};
+		};
+		C6B5A63D2EB22E2E006CCB4B /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MacPaw/OpenAI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.7;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2201090F2EA6A1B0007FB4C0 /* HorizonCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2201090E2EA6A1B0007FB4C0 /* XCRemoteSwiftPackageReference "HorizonCalendar" */;
+			productName = HorizonCalendar;
+		};
+		220109122EA6A678007FB4C0 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		220109142EA6A678007FB4C0 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		220109162EA6A678007FB4C0 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		C6B5A63E2EB22E2E006CCB4B /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6B5A63D2EB22E2E006CCB4B /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
+		};
+		C6F194242EA982390028375B /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		C6F194262EA982390028375B /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+		C6F194282EA982390028375B /* FirebaseFunctionsCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 220109112EA6A678007FB4C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFunctionsCombine-Community";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 22CB57352E91C86C0090B3E6 /* Project object */;
 }
