@@ -2,7 +2,6 @@ import SwiftUI
 
 struct GoalCardView: View {
     let goal: Goal
-    let child: Child?
     var onOpen: () -> Void
 
     var body: some View {
@@ -17,9 +16,6 @@ struct GoalCardView: View {
 
                     HStack(spacing: 6) {
                         Chip(goal.domain.rawValue)
-                        if let child {
-                            Chip("Child: \(child.name)")
-                        }
                         if let due = goal.dueDate {
                             Chip("Due: \(dateFormatterShort.string(from: due))")
                         }

@@ -1,43 +1,60 @@
 import SwiftUI
 
+// MARK: - MilestoneView
+
 struct MilestoneView: View {
     @StateObject private var store = ProgressStore()
-
-    @State private var selectedChildId: UUID? = nil
+    @StateObject private var templateStore = TemplateStore()
+    
     @State private var selectedDomain: Domain? = nil
     @State private var openGoalId: UUID? = nil
-
+    @State private var showGoalForm = false
+    
     private var openGoal: Goal? {
         store.goals.first(where: { $0.id == openGoalId })
     }
-    private var openChild: Child? {
-        guard let gid = openGoalId, let goal = store.goals.first(where: { $0.id == gid }) else { return nil }
-        return store.children.first(where: { $0.id == goal.childId })
-    }
-
+    
     private var filtered: [Goal] {
-        store.goals.filter { g in
-            let childOK = selectedChildId == nil ? true : g.childId == selectedChildId
-            let domainOK = selectedDomain == nil ? true : g.domain == selectedDomain
-            return childOK && domainOK
-        }
+        store.goals.filter { selectedDomain == nil || $0.domain == selectedDomain }
     }
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
+            // Header + New Goal
             HStack {
-                Text("Progress Tracker").font(.title3).bold()
+                Text("Progress Tracker")
+                    .font(.title3)
+                    .bold()
                 Spacer()
                 Button("+ New Goal") {
-                    store.createQuickGoal(for: selectedChildId ?? store.children.first?.id, domain: selectedDomain)
-                    openGoalId = store.goals.first?.id
+                    showGoalForm = true
                 }
                 .buttonStyle(.bordered)
+                .sheet(isPresented: $showGoalForm) {
+                    GoalFormView(store: store, templateStore: templateStore) { newGoalId in
+                        openGoalId = newGoalId
+                    }
+                }
             }
-
-            if openGoal == nil {
-                FiltersView(children: store.children, selectedChildId: $selectedChildId, selectedDomain: $selectedDomain)
-
+            
+            // Detail or List
+            if let goal = openGoal {
+                GoalDetailView(
+                    goal: goal,
+                    onBack: { openGoalId = nil },
+                    onToggleMilestone: { milestoneId in
+                        store.toggleMilestone(goalId: goal.id, milestoneId: milestoneId)
+                    },
+                    onAddCheckIn: { note in
+                        store.addCheckIn(goalId: goal.id, note: note)
+                    },
+                    store: store,
+                    templateStore: templateStore// must be last if that’s how the view is defined
+                )
+            } else {
+                // Filters + List
+                FiltersView(selectedDomain: $selectedDomain)
+                
                 if filtered.isEmpty {
                     RoundedRectangle(cornerRadius: 12)
                         .strokeBorder(Color.gray.opacity(0.3), style: StrokeStyle(lineWidth: 1, dash: [4]))
@@ -50,7 +67,7 @@ struct MilestoneView: View {
                     ScrollView {
                         LazyVStack(spacing: 12) {
                             ForEach(filtered) { g in
-                                GoalCardView(goal: g, child: store.children.first(where: { $0.id == g.childId })) {
+                                GoalCardView(goal: g) {
                                     openGoalId = g.id
                                 }
                             }
@@ -58,16 +75,8 @@ struct MilestoneView: View {
                         .padding(.vertical, 4)
                     }
                 }
-            } else if let goal = openGoal {
-                GoalDetailView(
-                    goal: goal,
-                    child: openChild,
-                    onBack: { openGoalId = nil },
-                    onToggleMilestone: { mid in store.toggleMilestone(goalId: goal.id, milestoneId: mid) },
-                    onAddCheckIn: { rating, note in store.addCheckIn(goalId: goal.id, rating: rating, note: note) }
-                )
             }
-
+            
             Spacer(minLength: 0)
         }
         .padding()

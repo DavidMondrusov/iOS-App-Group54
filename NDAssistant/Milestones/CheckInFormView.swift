@@ -1,37 +1,25 @@
 import SwiftUI
 
 struct CheckInFormView: View {
-    var onSubmit: (Int, String) -> Void
-    @State private var rating: Int = 3
+    var onAddCheckIn: (String) -> Void
     @State private var note: String = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Quick check-in").font(.headline)
 
-            HStack {
-                Text("Rating")
-                Spacer()
-                Picker("Rating", selection: $rating) {
-                    ForEach(1...5, id: \.self) { n in
-                        Text("\(n)").tag(n)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .frame(maxWidth: 260)
-            }
-
-            TextField("Notes (optional)", text: $note, axis: .vertical)
+            TextField("Notes", text: $note, axis: .vertical)
                 .textFieldStyle(.roundedBorder)
                 .lineLimit(1...3)
 
             HStack {
                 Spacer()
                 Button("Log check-in") {
-                    onSubmit(rating, note)
+                    onAddCheckIn(note)
                     note = ""
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(note.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
         }
         .padding(12)
