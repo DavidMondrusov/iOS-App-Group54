@@ -12,12 +12,14 @@ import FirebaseCore
 struct NDAssistantApp: App {
     
     init() {
-        FirebaseApp.configure()
+         FirebaseApp.configure()
     }
     
     var body: some Scene {
         WindowGroup {
+            
             ContentView()
+//            MedicalView()
         }
     }
 }
