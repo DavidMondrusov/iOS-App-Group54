@@ -43,6 +43,7 @@ struct OnboardingFormView: View {
     
     let schoolingOptions = ["Public", "Private", "Homeschool", "Charter", "Online"]
     let livingSituationOptions = ["Multiple Households (e.g. Split Custody)", "Single Household"]
+    let MaritalOptions = ["Married", "Single", "Widowed", "Separated"]
     let sections = ["Basic Info", "Child Details", "Family Info", "Location"]
     
     var body: some View {
@@ -191,8 +192,22 @@ struct OnboardingFormView: View {
                 .keyboardType(.numberPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
-            TextField("Marital Status", text: $maritalStatus)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Marital Status")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                            
+                Picker("Marital Status", selection: $maritalStatus) {
+                    Text("Select...").tag("")
+                    ForEach(MaritalOptions, id: \.self) { option in
+                        Text(option).tag(option)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+            }
             
             VStack(alignment: .leading, spacing: 5) {
                 Text("Living Situation")
