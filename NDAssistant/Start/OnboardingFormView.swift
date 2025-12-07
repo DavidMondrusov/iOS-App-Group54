@@ -21,13 +21,12 @@ struct OnboardingFormView: View {
     @State private var conditions = ""
     @State private var age = ""
     @State private var siblings = ""
-    @State private var parentalStatus = ""
     @State private var schooling = "Public"
     
     // Family Info
-    @State private var income = ""
-    @State private var maritalStatus = ""
-    @State private var livingSituation = ""
+    @State private var income = "" // possible to leave blank
+    @State private var maritalStatus = "" // parents are married, single, widowed, or separated can delete parentalStatus
+    @State private var livingSituation = "" // multiple homes because of separated parents
     @State private var householdSize = ""
     @State private var occupation = ""
     
@@ -43,6 +42,7 @@ struct OnboardingFormView: View {
     @State private var currentSection = 0
     
     let schoolingOptions = ["Public", "Private", "Homeschool", "Charter", "Online"]
+    let livingSituationOptions = ["Multiple Households (e.g. Split Custody)", "Single Household"]
     let sections = ["Basic Info", "Child Details", "Family Info", "Location"]
     
     var body: some View {
@@ -167,18 +167,21 @@ struct OnboardingFormView: View {
                 .keyboardType(.numberPad)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
-            TextField("Parental Status", text: $parentalStatus)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
-            Picker("Schooling", selection: $schooling) {
-                ForEach(schoolingOptions, id: \.self) { option in
-                    Text(option).tag(option)
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Schooling")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                           
+                Picker("Schooling", selection: $schooling) {
+                    ForEach(schoolingOptions, id: \.self) { option in
+                        Text(option).tag(option)
+                    }
                 }
+                .pickerStyle(MenuPickerStyle())
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
             }
-            .pickerStyle(MenuPickerStyle())
-            .padding()
-            .background(Color(.systemGray6))
-            .cornerRadius(8)
         }
     }
     
@@ -191,8 +194,22 @@ struct OnboardingFormView: View {
             TextField("Marital Status", text: $maritalStatus)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             
-            TextField("Living Situation", text: $livingSituation)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Living Situation")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                            
+                Picker("Living Situation", selection: $livingSituation) {
+                    Text("Select...").tag("")
+                    ForEach(livingSituationOptions, id: \.self) { option in
+                        Text(option).tag(option)
+                    }
+                }
+                .pickerStyle(MenuPickerStyle())
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(8)
+            }
             
             TextField("Household Size", text: $householdSize)
                 .keyboardType(.numberPad)
@@ -267,13 +284,12 @@ struct OnboardingFormView: View {
                 "Name": stringToAny(childName),
                 "Age": intToAny(age),
                 "Siblings": intToAny(siblings),
-                "Parental_status": stringToAny(parentalStatus),
                 "Schooling": schooling
             ],
             "Family_info": [
                 "Income": intToAny(income),
-                "Martial_status": stringToAny(maritalStatus),
-                "Living_situation": stringToAny(livingSituation),
+                "Marital_status": stringToAny(maritalStatus),
+                "Living_situation": livingSituation,
                 "Household_size": intToAny(householdSize),
                 "Occupation": stringToAny(occupation)
             ],
